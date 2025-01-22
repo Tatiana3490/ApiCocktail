@@ -1,0 +1,940 @@
+openapi: 3.0.1
+info:
+  title: API Cocktails
+  description: API para gestionar categorías, cócteles, ingredientes, ubicaciones y reseñas.
+  version: 1.0.0
+
+tags:
+  - name: users
+    description: Operaciones relacionadas con los usuarios
+  - name: cocktails
+    description: Operaciones relacionadas con los cocteles
+  - name: categories
+    description: Operaciones relacionadas con las categorias de los cocteles
+  - name: ingredients
+    description: Operaciones relacionadas con los ingredientes de los cocteles
+  - name: locations
+    description: Operaciones relacionadas con las localizaciones de los cocteles
+  - name: reviews
+    description: Operaciones relacionadas con las reseñas de los usuarios
+
+servers:
+  - url: 'http://localhost:8080'
+
+paths:
+  /users:
+    get:
+      tags:
+        - users
+      summary: Obtener todos los usuarios
+      description: Devuelve una lista de todos los usuarios registrados.
+      responses:
+        '200':
+          description: Lista de usuarios devuelta con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/User'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - users
+      summary: Crear un nuevo usuario
+      description: Registra un nuevo usuario en el sistema.
+      requestBody:
+        description: Detalles del nuevo usuario
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: Usuario creado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /users/{id}:
+    get:
+      tags:
+        - users
+      summary: Obtener un usuario por ID
+      description: Devuelve un usuario específico basado en su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del usuario
+      responses:
+        '200':
+          description: Usuario encontrado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - users
+      summary: Actualizar un usuario por ID
+      description: Actualiza los detalles de un usuario específico.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del usuario
+      requestBody:
+        description: Nuevos detalles del usuario
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: Usuario actualizado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - users
+      summary: Eliminar un usuario por ID
+      description: Elimina un usuario identificado por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del usuario
+      responses:
+        '204':
+          description: Usuario eliminado con éxito (sin contenido en la respuesta)
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /cocktails:
+    get:
+      tags:
+        - cocktails
+      summary: Obtener todos los cócteles
+      description: Devuelve una lista de todos los cócteles registrados.
+      responses:
+        '200':
+          description: Lista de cócteles devuelta con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Cocktail'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - cocktails
+      summary: Crear un nuevo cóctel
+      description: Registra un nuevo cóctel en el sistema.
+      requestBody:
+        description: Detalles del nuevo cóctel
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cocktail'
+      responses:
+        '201':
+          description: Evento creado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cocktail'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /cocktails/{id}:
+    get:
+      tags:
+        - cocktails
+      summary: Obtener un cóctel por ID
+      description: Devuelve un cóctel específico basado en su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del cóctel
+      responses:
+        '200':
+          description: Cóctel encontrado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cocktail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - cocktails
+      summary: Actualizar un cóctel por ID
+      description: Actualiza los detalles de un cóctel específico.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del cóctel
+      requestBody:
+        description: Nuevos detalles del cóctel
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cocktail'
+      responses:
+        '200':
+          description: Cóctel actualizado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cocktail'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - cocktails
+      summary: Eliminar un cóctel por ID
+      description: Elimina un cóctel identificado por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del cóctel
+      responses:
+        '204':
+          description: Cóctel eliminado con éxito (sin contenido en la respuesta)
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /category:
+    get:
+      tags:
+        - categories
+      summary: Obtener todas las categorías
+      description: Devuelve una lista de todas las categorías registradas.
+      responses:
+        '200':
+          description: Lista de categorías devuelta con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Category'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - categories
+      summary: Crear una nueva categoría
+      description: Registra una nueva categoría en el sistema.
+      requestBody:
+        description: Detalles de la nueva categoría
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '201':
+          description: Categoría creada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /categories/{id}:
+    get:
+      tags:
+        - categories
+      summary: Obtener una categoría por ID
+      description: Devuelve una categoría específica basada en su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la categoría
+      responses:
+        '200':
+          description: Categoría encontrada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - categories
+      summary: Actualizar una categoría por ID
+      description: Actualiza los detalles de una categoría específica.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la categoría
+      requestBody:
+        description: Nuevos detalles de la categoria
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Category'
+      responses:
+        '200':
+          description: Categoría actualizada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Category'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - categories
+      summary: Eliminar una categoría por ID
+      description: Elimina una categoría identificada por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la categoría
+      responses:
+        '204':
+          description: Categoría eliminada con éxito (sin contenido en la respuesta)
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /ingredient:
+    get:
+      tags:
+        - ingredients
+      summary: Obtener todos los ingredientes de los cócteles
+      description: Devuelve una lista de todos los ingredientes de los cócteles registradas.
+      responses:
+        '200':
+          description: Lista de ingredientes devuelta con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Ingredient'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - ingredients
+      summary: Crear un nuevo ingrediente de cóctel
+      description: Registra un nuevo ingrediente de cóctel en el sistema.
+      requestBody:
+        description: Detalles del nuevo ingrediente de cóctel
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ingredient'
+      responses:
+        '201':
+          description: Ingrediente creado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ingredient'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /ingredient/{id}:
+    get:
+      tags:
+        - ingredients
+      summary: Obtener un ingrediente por ID
+      description: Devuelve un ingrediente específico basado en su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del ingrediente
+      responses:
+        '200':
+          description: Ingrediente encontrado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ingredient'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - ingredients
+      summary: Actualizar un ingrediente por ID
+      description: Actualiza los detalles de un ingrediente específico.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del ingrediente
+      requestBody:
+        description: Nuevos detalles del ingrediente
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Ingredient'
+      responses:
+        '200':
+          description: Ingrediente actualizado con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Ingredient'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - ingredients
+      summary: Eliminar un ingrediente por ID
+      description: Elimina un ingrediente identificado por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del ingrediente
+      responses:
+        '204':
+          description: Ingrediente eliminado con éxito (sin contenido en la respuesta)
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+  /location:
+    get:
+      tags:
+        - locations
+      summary: Obtener todos las localizaciones
+      description: Devuelve una lista de todas las localizaciones de cócteles registrados.
+      responses:
+        '200':
+          description: Lista de localizaciones devuelta con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Location'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - locations
+      summary: Crear una nueva localización
+      description: Registra una nueva localización en el sistema.
+      requestBody:
+        description: Detalles de la nueva localización
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Location'
+      responses:
+        '201':
+          description: Localización creada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /location/{id}:
+    get:
+      tags:
+        - locations
+      summary: Obtener una localización por ID
+      description: Devuelve una localización específica basado en su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la localización
+      responses:
+        '200':
+          description: Localización encontrada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - locations
+      summary: Actualizar una localización por ID
+      description: Actualiza los detalles de una localización específica.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del pago
+      requestBody:
+        description: Nuevos detalles de la localización
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Location'
+      responses:
+        '200':
+          description: Localización actualizada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Location'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - locations
+      summary: Eliminar una localización por ID
+      description: Elimina una localización identificada por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la localización
+      responses:
+        '204':
+          description: Localización eliminada con éxito (sin contenido en la respuesta)
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /review:
+    get:
+      tags:
+        - reviews
+      summary: Obtener todas las reseñas
+      description: Devuelve una lista de todas las reseñas de cócteles registrados.
+      responses:
+        '200':
+          description: Lista de reseñas devuelta con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Review'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    post:
+      tags:
+        - reviews
+      summary: Crear una nueva reseña
+      description: Registra una nueva reseña en el sistema.
+      requestBody:
+        description: Detalles de la nueva reseña
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        '201':
+          description: Reseña creada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+  /review/{id}:
+    get:
+      tags:
+        - reviews
+      summary: Obtener una reseña por ID
+      description: Devuelve una reseña específica basada en su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la reseña
+      responses:
+        '200':
+          description: Reseña encontrada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    put:
+      tags:
+        - reviews
+      summary: Actualizar una reseña por ID
+      description: Actualiza los detalles de una reseña específica.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la reseña
+      requestBody:
+        description: Nuevos detalles de la reseña
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
+      responses:
+        '200':
+          description: Reseña actualizada con éxito
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Review'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+    delete:
+      tags:
+        - reviews
+      summary: Eliminar una reseña por ID
+      description: Elimina una reseña identificada por su ID.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de la reseña
+      responses:
+        '204':
+          description: Reseña eliminada con éxito (sin contenido en la respuesta)
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServerError'
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID único del usuario
+        username:
+          type: string
+          description: Nombre de usuario
+        password:
+          type: string
+          description: Contraseña del usuario
+        name:
+          type: string
+          description: Nombre del usuario
+        surname:
+          type: string
+          description: Apellido del usuario
+        email:
+          type: string
+          description: Email del usuario
+        creationDate:
+          type: string
+          format: date
+          description: Fecha de creación
+      required:
+        - username
+        - email
+        - password
+      example:
+        id: 1
+        username: tatialcu
+        email: tatianalcubilla@email.com
+        password: password1234
+        creationDate: 2025-01-01
+
+
+    Cocktail:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID único del cóctel
+        name:
+          type: string
+          description: Nombre del coctel
+        description:
+          type: string
+          description: Descripcion del coctel
+        category:
+          type: integer
+          description: Categoría del coctel
+        releaseDate:
+          type: integer
+          format: date
+          description: Fecha de publicación del coctel
+        degrees:
+          type: integer
+          format: double
+          description: Grados de alcohol del coctel
+        latitude:
+          type: integer
+          format: double
+          description: Latitud del coctel
+        longitude:
+          type: integer
+          format: double
+          description: Longitud del coctel
+      required:
+        - name
+        - description
+        - category
+        - degrees
+      example:
+        id: 1
+        name: Virgin Mojito
+        description: versión sin alcohol del clásico cóctel Mojito
+        category: No alcohol
+        releaseDate: 2025-01-07
+        degrees: 0
+        latitude: 40.4168° N
+        longitude: 3.7038° W
+
+    Category:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID único de la categoría
+        name:
+          type: string
+          description: Nombre de la categoría
+        description:
+          type: string
+          description: Dependiendo del momento del consumo, puede ser aperitivo, digestivo, de todo el día.
+      required:
+        - name
+        - description
+      example:
+        id: 1
+        name: Cócteles de todo el día
+        description: Bebida refrescante, ligera y sin alcohol que puede disfrutarse en cualquier momento del día.
+
+    Ingredient:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID único del ingrediente
+        name:
+          type: string
+          description: Nombre del ingrediente
+        description:
+          type: string
+          description: Descripcion del ingrediente
+        quantity:
+          type: integer
+          description: Cantidad del ingrediente
+        unit:
+          type: string
+          description: Medida utilizada para medir la cantidad del ingrediente.
+      required:
+        - name
+        - description
+        - quantity
+        - unit
+      example:
+        id: 1
+        name: Agua con gas
+        description: Agua con gas
+        quantity: 100
+        unit: ml
+
+    Location:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID único de la localización
+        address:
+          type: string
+          description: Dirección exacta de donde se encuentra el cóctel
+        city:
+          type: string
+          description: Ciudad en la que se encuentra el cóctel
+        state:
+          type: string
+          description: Estado en el que se encuentra el cóctel
+        country:
+          type: string
+          description: País en el que se encuentra el cóctel
+      required:
+        - address
+        - city
+        - state
+        - country
+      example:
+        id: 1
+        address: CL Alegría 3
+        city: Madrid
+        state: Madrid
+        country: España
+
+    Review:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: ID único de la reseña
+        rating:
+          type: integer
+          description: Puntuación de la reseña
+        comment:
+          type: string
+          description: Comentario o reseña sobre el cóctel
+      required:
+        - rating
+        - comment
+      example:
+        id: 1
+        rating: 10
+        comment: Un buen cóctel para tomar cuando tienes que conducir.
+
+  responses:
+    BadRequest:
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Bad Request
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: Not Found
+    InternalServerError:
+      description: InternalServerError
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: InternalServerError
+
