@@ -27,6 +27,11 @@ public class Ingredient {
     @Column
     private String unit;
 
-    @ManyToMany(mappedBy = "ingredients") // Relación inversa definida en Cocktail
-    private Set<Cocktail> cocktails;
+   /* @ManyToMany(mappedBy = "ingredients")
+    private Set<Cocktail> cocktails;*/
+
+    @ManyToOne
+    @JoinColumn(name = "cocktail_id")
+    private Cocktail cocktail;
+
 }
