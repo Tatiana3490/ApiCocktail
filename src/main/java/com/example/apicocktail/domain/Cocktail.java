@@ -45,17 +45,17 @@ public class Cocktail {
     @JoinColumn(name = "category_id", nullable = false) // Clave foránea hacia Category
 
 
-   /* @ManyToMany
+   @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     @JoinTable(
             name = "cocktail_ingredient", // Nombre de la tabla intermedia
-            joinColumns = @JoinColumn(name = "cocktail_id"), // Clave foránea hacia Cocktail
-            inverseJoinColumns = @JoinColumn(name = "ingredient_id") // Clave foránea hacia Ingredient
+            joinColumns = @JoinColumn(name = "cocktail_id", referencedColumnName = "id"), // Clave foránea hacia Cocktail
+            inverseJoinColumns = @JoinColumn(name = "ingredient_id", referencedColumnName = "id") // Clave foránea hacia Ingredient
     )
-    private Set<Ingredient> ingredients;*/
-
-    @OneToMany(mappedBy = "cocktail") // Relación (1,N)
-    @JsonBackReference(value = "cocktail")
     private List<Ingredient> ingredients;
+
+  /*  @OneToMany(mappedBy = "cocktail") // Relación (1,N)
+    @JsonBackReference(value = "cocktail")
+    private List<Ingredient> ingredients;*/
 
     @OneToOne
     @JoinColumn(name = "location_id", referencedColumnName = "id")

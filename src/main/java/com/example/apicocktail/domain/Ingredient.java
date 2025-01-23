@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -27,11 +28,11 @@ public class Ingredient {
     @Column
     private String unit;
 
-   /* @ManyToMany(mappedBy = "ingredients")
-    private Set<Cocktail> cocktails;*/
+   @ManyToMany(mappedBy = "ingredients")
+    private List<Cocktail> cocktails;
 
-    @ManyToOne
+   /* @ManyToOne
     @JoinColumn(name = "cocktail_id")
-    private Cocktail cocktail;
+    private Cocktail cocktail;*/
 
 }
